@@ -1,0 +1,8 @@
+[package]
+name = "xelph/roblox-conveyors"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+curve = "ddavness/curve@0.1.0"
