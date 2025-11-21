@@ -4,13 +4,19 @@ local ConveyorTrack = require(script:WaitForChild("ConveyorTrack"))
 
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SpawnBagRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("SpawnBag")
+local SpawnBagRemote = ReplicatedStorage.Remotes.SpawnBag
 local endParts = ConveyorTrack:Construct()
 
 endParts.ending.Touched:Connect(function(touchedPart)
     if touchedPart:HasTag("Bag") then
         touchedPart:Destroy()
     end
+end)
+
+local waitTime = 1
+
+ReplicatedStorage.Remotes.ChangeRate.OnServerEvent:Connect(function(player: Player, wait: number)
+    waitTime = math.clamp(wait, 1, 3)
 end)
 
 while true do
@@ -20,5 +26,5 @@ while true do
 
     SpawnBagRemote:FireAllClients(HttpService:GenerateGUID(), randomMaterial, randomColor, endParts.start.CFrame)
 
-    task.wait(1)
+    task.wait(waitTime)
 end
