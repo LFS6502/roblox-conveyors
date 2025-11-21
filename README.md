@@ -11,7 +11,7 @@ Normally bezier animations are faster around corners, which is why they have to 
 
 The parts don't exist on the server, and it currently doesn't keep track of valid bag IDs. Obviously, the server being able to print the IDs of non-existent bags is not a security issue, however, in case it matters, it would be trivial to keep a table of valid IDs and use it to sanitize the remote event.
 
-The remote even for changing the spawn rate however, is sanitized. The input is clamped, and only the designated player is allowed to change it.
+The remote event for changing the spawn rate however, is sanitized. The input is clamped, and only the designated player is allowed to change it.
 
 
 ## Why beziers, and not something simpler?
