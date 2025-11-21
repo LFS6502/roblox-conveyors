@@ -1,7 +1,9 @@
+--!strict
+
 local module = {}
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-function module:Construct()
+function module:Construct(): {start: BasePart, ending: BasePart}
     local Curve = require(ReplicatedStorage.Packages.curve)
 
     local bezierPoints = workspace:WaitForChild("BezierPoints")
@@ -15,7 +17,7 @@ function module:Construct()
 
     local totalLength = 0
 
-    for i = 1, steps-1 do
+    for i = 0, steps-1 do
         local t = i/steps
         local next = (i+1)/steps
 
@@ -29,10 +31,11 @@ function module:Construct()
         local newSegment = Instance.new("Part")
         newSegment.Size = Vector3.new(conveyorWidth, 1, segmentLength+0.1)
         newSegment.Anchored = true
-        newSegment.AssemblyLinearVelocity = segmentVector.Unit * 20
+        newSegment.AssemblyLinearVelocity = segmentVector.Unit * 5
         newSegment.CFrame = segmentCFrame
         newSegment.Color = Color3.new(0,0,0)
         newSegment.Material = Enum.Material.SmoothPlastic
+        newSegment.Name = `Floor{i}`
         newSegment.Parent = bezierTrack
 
         local offsets = {-conveyorWidth/2, conveyorWidth/2}
@@ -43,12 +46,18 @@ function module:Construct()
             newSideWall.CFrame = segmentCFrame + (segmentCFrame.RightVector * offset)
             newSideWall.Color = Color3.new(0.2,0.2,0.2)
             newSideWall.Material = Enum.Material.SmoothPlastic
+            newSideWall.Name = "Wall"
             newSideWall.Parent = bezierTrack
         end
     end
 
     bezierTrack.Parent = workspace
     print(`Total conveyor length: {totalLength}`)
+
+    return {
+        start = bezierTrack:FindFirstChild("Floor0")::BasePart,
+        ending = bezierTrack:FindFirstChild(`Floor{steps-1}`)::BasePart
+    }
 end
 
 return module
