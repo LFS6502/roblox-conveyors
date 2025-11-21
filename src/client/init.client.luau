@@ -20,6 +20,11 @@ local Debris = game:GetService("Debris")
 type AnimationData = {part: BasePart, t: number}
 local animatedBags: {AnimationData} = {}
 
+local function OnBagClick(part: Instance) 
+    print(part.Name)
+    ReplicatedStorage.Remotes.BagClicked:FireServer(part.Name)
+end
+
 --Bag spawner
 ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("SpawnBag").OnClientEvent:Connect(function(id: string, material: Enum.Material, color: Color3, cFrame: CFrame)
     local newBag: BasePart = Instance.new("Part")
@@ -31,6 +36,12 @@ ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("SpawnBag").OnClientEvent
     newBag.Transparency = 1
     newBag:AddTag("Bag")
     newBag.Name = id
+
+    local newClickDetector = Instance.new("ClickDetector")
+    newClickDetector.Parent = newBag
+    newClickDetector.MouseClick:Connect(function(_)  
+        OnBagClick(newBag)
+    end)
     newBag.Parent = workspace.Bags
 
     local tween = TweenService:Create(
@@ -79,6 +90,8 @@ RunService.RenderStepped:Connect(function(deltaTime: number)
 end)
 
 
+
+--Slider GUI
 local rail = game.Players.LocalPlayer.PlayerGui.SliderGui.Rail::Frame
 local sliderButton = game.Players.LocalPlayer.PlayerGui.SliderGui.Rail.Slider::TextButton
 
