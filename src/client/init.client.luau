@@ -101,13 +101,13 @@ end
 sliderButton.Text = string.format("%.1f", PercentageToTime(0))
 
 sliderButton.MouseButton1Down:Connect(function()
-    local percentage = 0
+    local positionRatio = 0
     while UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
         local mouse = game.Players.LocalPlayer:GetMouse() 
-        percentage = math.clamp((mouse.x - rail.AbsolutePosition.X)/rail.AbsoluteSize.X, 0, 1)
-        sliderButton.Position = UDim2.new(percentage, 0, 0, 0)
-        sliderButton.Text = string.format("%.1f", PercentageToTime(percentage))
+        positionRatio = math.clamp((mouse.x - rail.AbsolutePosition.X)/rail.AbsoluteSize.X, 0, 1)
+        sliderButton.Position = UDim2.new(positionRatio, 0, 0, 0)
+        sliderButton.Text = string.format("%.1f", PercentageToTime(positionRatio))
         RunService.RenderStepped:Wait()
     end
-    ReplicatedStorage.Remotes.ChangeRate:FireServer(PercentageToTime(percentage))
+    ReplicatedStorage.Remotes.ChangeRate:FireServer(PercentageToTime(positionRatio))
 end)
